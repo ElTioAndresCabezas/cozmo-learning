@@ -1,7 +1,7 @@
 # What is this? / ¿Qué es esto?
 
 A repository to leave all my programs and experimentation using an Anki Cozmo robot.<br>
-Un repositorio para dejar todos mis programas y experimentación usand un robot Anki Cozmo.
+Un repositorio para dejar todos mis programas y experimentación usando un robot Anki Cozmo.
 
 # What you need to use these scripts / Qué necesitas para usar estos scripts
 
