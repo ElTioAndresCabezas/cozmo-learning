@@ -71,20 +71,61 @@ def cozmo_program(robot: cozmo.robot.Robot):
     #Wait in order to not crash anything
     time.sleep(5)
 
-    #let's make Cozmo choose a play - Hagamos que Cozmo elija una jugada
-    cozmo_choice = randint(0,2)
-    '''
-    0: Rock - Piedra
-    1: Paper - Papel
-    2: Scissors - Tijeras
-    '''
 
-    if cozmo_choice == 0: #Cozmo chooses Rock - Cozmo elije Piedra
-        pass
-    elif cozmo_choice == 1: #Cozmo chooses Paper - Cozmo elije Papel
-        pass
-    elif cozmo_choice == 2: #Cozmo chooses Scissors - Cozmo elije Tijeras
-        pass
+    while True:
+        #let's make Cozmo choose a play - Hagamos que Cozmo elija una jugada
+        cozmo_choice = randint(0,2)
+        '''
+        0: Rock - Piedra
+        1: Paper - Papel
+        2: Scissors - Tijeras
+        '''
+
+        player_choice = None
+
+        rock.last_tapped_time = None
+        paper.last_tapped_time = None
+        scissors.last_tapped_time = None
+        
+
+        while player_choice == None:
+            print('Waiting for input - Esperando entrada')
+            time.sleep(2)
+            if rock.last_tapped_time != None:
+                print('rock')
+                player_choice = 0
+            elif paper.last_tapped_time != None:
+                print('paper')
+                player_choice = 1
+            elif scissors.last_tapped_time != None:
+                print('scissors')
+                player_choice = 2
+
+        print(player_choice)
+
+        if cozmo_choice == 0: #Cozmo chooses Rock - Cozmo elije Piedra
+            if player_choice == 0:
+                print('Tie - Empate')
+            elif player_choice == 1:
+                print('Cozmo loses - Cozmo pierde')
+            elif player_choice == 2:
+                print('Cozmo wins - Cozmo gana')
+
+        elif cozmo_choice == 1: #Cozmo chooses Paper - Cozmo elije Papel
+            if player_choice == 0:
+                print('Cozmo wins - Cozmo gana')
+            elif player_choice == 1:
+                print('Tie - Empate')
+            elif player_choice == 2:
+                print('Cozmo loses - Cozmo pierde')
+
+        elif cozmo_choice == 2: #Cozmo chooses Scissors - Cozmo elije Tijeras
+            if player_choice == 0:
+                print('Cozmo loses - Cozmo pierde')
+            elif player_choice == 1:
+                print('Cozmo wins - Cozmo gana')
+            elif player_choice == 2:
+                print('Tie - Empate')
 
 
 
