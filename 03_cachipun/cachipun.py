@@ -8,11 +8,20 @@
 #For IIC1005 class of 2021-1
 #Instructed by Professor Denis Parra
 
+'''
+ToDo list:
+1. Add Light Chaser to all the cubes, to give feedback on the gameplay
+2. Give Cozmo expressions when he wins, loses, or ties
+3. Make the game just prettier
+'''
+
 import cozmo
 import asyncio
 import time
 from cozmo.util import degrees
 from random import randint
+from PIL import Image as image
+import os
 
 
 class Cube(cozmo.objects.LightCube):
@@ -43,6 +52,25 @@ class Cube(cozmo.objects.LightCube):
 
 cozmo.world.World.light_cube_factory = Cube
 
+def image_preparation():
+    current_d = os.path.dirname(os.path.realpath(__file__))
+    
+    rock_png = os.path.join(current_d,'images','rock.png')
+    paper_png = os.path.join(current_d,'images','paper.png')
+    scissors_png = os.path.join(current_d,'images','scissors.png')
+    
+    image_settings = [(rock_png, image.NEAREST),(paper_png, image.NEAREST),(scissors_png, image.NEAREST)]
+    icons = []
+
+    for image_name, resampling_mode in image_settings:
+        icon = image.open(image_name)
+
+        resized_image = icon.resize(cozmo.oled_face.dimensions(), resampling_mode)
+        face_image = cozmo.oled_face.convert_image_to_screen_data(resized_image, invert_image=True)
+
+        icons.append(face_image)
+    return icons
+
 def cozmo_program(robot: cozmo.robot.Robot):
     robot.set_head_angle(degrees(-5.0)).wait_for_completed()
 
@@ -53,6 +81,7 @@ def cozmo_program(robot: cozmo.robot.Robot):
     paper = None
     scissors = None
 
+    icons = image_preparation()
 
     print('Rock, Paper, Scissors for Cozmo! - Cachipun para Cozmo!')
     print('The first to get 5 points wins! - El primero en obtener 5 puntos gana!')
@@ -77,6 +106,8 @@ def cozmo_program(robot: cozmo.robot.Robot):
     #Wait in order to not crash anything
     time.sleep(5)
 
+    robot.set_head_angle(cozmo.robot.MAX_HEAD_ANGLE)
+
     '''
     The game will run as long as the score requirement hasn't met
     El juego correra indefinidamente, a menos que se cumpla el requisito de puntaje
@@ -100,7 +131,7 @@ def cozmo_program(robot: cozmo.robot.Robot):
 
         while player_choice == None:
             print('Waiting for input - Esperando entrada')
-            time.sleep(2)
+            time.sleep(1)
             if rock.last_tapped_time != None:
                 #print('rock')
                 player_choice = 0
@@ -115,31 +146,43 @@ def cozmo_program(robot: cozmo.robot.Robot):
         #print(cozmo_choice)
 
         if cozmo_choice == 0: #Cozmo chooses Rock - Cozmo elije Piedra
+            robot.display_oled_face_image(icons[0], 1000).wait_for_completed()
+
             if player_choice == 0:
                 print('Tie - Empate')
             elif player_choice == 1:
                 print('Cozmo loses - Cozmo pierde')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
                 player_score += 1
             elif player_choice == 2:
                 print('Cozmo wins - Cozmo gana')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
                 cozmo_score += 1
 
         elif cozmo_choice == 1: #Cozmo chooses Paper - Cozmo elije Papel
+            robot.display_oled_face_image(icons[1], 1000).wait_for_completed()
+            
             if player_choice == 0:
                 print('Cozmo wins - Cozmo gana')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
                 cozmo_score += 1
             elif player_choice == 1:
                 print('Tie - Empate')
             elif player_choice == 2:
                 print('Cozmo loses - Cozmo pierde')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
                 player_score += 1
 
         elif cozmo_choice == 2: #Cozmo chooses Scissors - Cozmo elije Tijeras
+            robot.display_oled_face_image(icons[2], 1000).wait_for_completed()
+            
             if player_choice == 0:
                 print('Cozmo loses - Cozmo pierde')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
                 player_score += 1
             elif player_choice == 1:
                 print('Cozmo wins - Cozmo gana')
+                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
                 cozmo_score += 1
             elif player_choice == 2:
                 print('Tie - Empate')
@@ -149,8 +192,10 @@ def cozmo_program(robot: cozmo.robot.Robot):
 
     if cozmo_score > player_score:
         print('Cozmo wins the game! - Cozmo gana la partida!')
+        robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
     elif cozmo_score < player_score:
         print('The player wins the game! - El jugador gana la partida!')
+        robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
 
     return 0
 
