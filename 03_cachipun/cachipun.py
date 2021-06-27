@@ -152,11 +152,11 @@ def cozmo_program(robot: cozmo.robot.Robot):
                 print('Tie - Empate')
             elif player_choice == 1:
                 print('Cozmo loses - Cozmo pierde')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseSession).wait_for_completed()
                 player_score += 1
             elif player_choice == 2:
                 print('Cozmo wins - Cozmo gana')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
                 cozmo_score += 1
 
         elif cozmo_choice == 1: #Cozmo chooses Paper - Cozmo elije Papel
@@ -164,13 +164,13 @@ def cozmo_program(robot: cozmo.robot.Robot):
             
             if player_choice == 0:
                 print('Cozmo wins - Cozmo gana')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
                 cozmo_score += 1
             elif player_choice == 1:
                 print('Tie - Empate')
             elif player_choice == 2:
                 print('Cozmo loses - Cozmo pierde')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseSession).wait_for_completed()
                 player_score += 1
 
         elif cozmo_choice == 2: #Cozmo chooses Scissors - Cozmo elije Tijeras
@@ -178,11 +178,11 @@ def cozmo_program(robot: cozmo.robot.Robot):
             
             if player_choice == 0:
                 print('Cozmo loses - Cozmo pierde')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseSession).wait_for_completed()
                 player_score += 1
             elif player_choice == 1:
                 print('Cozmo wins - Cozmo gana')
-                robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
+                robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
                 cozmo_score += 1
             elif player_choice == 2:
                 print('Tie - Empate')
@@ -192,10 +192,10 @@ def cozmo_program(robot: cozmo.robot.Robot):
 
     if cozmo_score > player_score:
         print('Cozmo wins the game! - Cozmo gana la partida!')
-        robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabWin).wait_for_completed()
+        robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceWinRound).wait_for_completed()
     elif cozmo_score < player_score:
         print('The player wins the game! - El jugador gana la partida!')
-        robot.play_anim_trigger(cozmo.anim.Triggers.CodeLabUnhappy).wait_for_completed()
+        robot.play_anim_trigger(cozmo.anim.Triggers.CubePounceLoseSession).wait_for_completed()
 
     return 0
 
